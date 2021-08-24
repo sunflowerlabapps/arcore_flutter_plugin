@@ -32,13 +32,14 @@ class ArCoreController {
     return arcoreInstalled;
   }
 
-  ArCoreController({this.id,
-    this.enableTapRecognizer,
-    this.enablePlaneRenderer,
-    this.enableUpdateListener,
-    this.debug = false
+  ArCoreController(
+      {this.id,
+      this.enableTapRecognizer,
+      this.enablePlaneRenderer,
+      this.enableUpdateListener,
+      this.debug = false
 //    @required this.onUnsupported,
-  }) {
+      }) {
     _channel = MethodChannel('arcore_flutter_plugin_$id');
     _channel.setMethodCallHandler(_handleMethodCalls);
     init();
@@ -126,6 +127,13 @@ class ArCoreController {
         togglePlaneRenderer();
         break;
 
+      case 'takeScreenshot':
+        if (debug) {
+          print('Taking screenshot of current ar world');
+        }
+        takeScreenshot();
+        break;
+
       default:
         if (debug) {
           print('Unknown method ${call.method}');
@@ -143,7 +151,6 @@ class ArCoreController {
     _addListeners(node);
     return _channel.invokeMethod('addArCoreNode', params);
   }
-
 
   Future<String> togglePlaneRenderer() async {
     return _channel.invokeMethod('togglePlaneRenderer');
@@ -181,12 +188,12 @@ class ArCoreController {
     return _channel.invokeMethod('removeARCoreNode', {'nodeName': nodeName});
   }
 
-  Future<void> takeScreenshot() async{
-      return _channel.invokeMethod('takeScreenshot');
+  Future<void> takeScreenshot() async {
+    return _channel.invokeMethod('takeScreenshot');
   }
 
-  Map<String, dynamic> _addParentNodeNameToParams(Map geometryMap,
-      String parentNodeName) {
+  Map<String, dynamic> _addParentNodeNameToParams(
+      Map geometryMap, String parentNodeName) {
     if (parentNodeName?.isNotEmpty ?? false)
       geometryMap['parentNodeName'] = parentNodeName;
     return geometryMap;

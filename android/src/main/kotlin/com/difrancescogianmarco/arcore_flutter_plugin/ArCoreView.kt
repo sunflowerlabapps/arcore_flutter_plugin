@@ -355,7 +355,7 @@ class ArCoreView(val activity: Activity, context: Context, messenger: BinaryMess
 
 //        val now = LocalDateTime.now()
 //        now.format(DateTimeFormatter.ofPattern("M/d/y H:m:ss"))
-        val now = "rawScreenshot"
+        val now = "AR_Snapshot_" + getRandomString(8)
         // android/data/com.hswo.mvc_2021.hswo_mvc_2021_flutter_ar/files/
         // activity.applicationContext.getFilesDir().toString() //doesnt work!!
         // Environment.getExternalStorageDirectory()
@@ -370,6 +370,13 @@ class ArCoreView(val activity: Activity, context: Context, messenger: BinaryMess
         fileOutputStream.close()
 //        Log.i("path","fileoutputstream closed")
         return mPath as String
+    }
+
+      fun getRandomString(length: Int) : String {
+        val allowedChars =  ('0'..'9')
+        return (1..length)
+                .map { allowedChars.random() }
+                .joinToString("")
     }
 
     private fun arScenViewInit(call: MethodCall, result: MethodChannel.Result, context: Context) {
